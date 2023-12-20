@@ -1,0 +1,35 @@
+get_esp_template() {
+    local source_folder="$HOME/esp/esp-idf-template"
+    local target_folder="template"
+    local lang="c"  # Default to 'c'
+    local target_path=""
+
+    for arg in "$@"; do
+        case $arg in
+            path=*)
+                target_path="${arg#*=}"
+                ;;
+            as=*)
+                target_folder="${arg#*=}"
+                ;;
+            lang=*)
+                lang="${arg#*=}"
+                ;;
+            *)
+                ;;
+        esac
+    done
+
+    # Update the source folder based on the selected language
+    source_folder="$HOME/esp/esp-idf-template-$lang"
+
+    if [ -n "$target_path" ]; then
+        target_folder_path="$target_path/$target_folder"
+    else
+        target_folder_path="$target_folder"
+    fi
+
+    cp -R "$source_folder" "$target_folder_path"
+
+    echo "Template copied to: $target_folder_path"
+}
